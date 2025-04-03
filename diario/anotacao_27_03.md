@@ -97,7 +97,7 @@ class Pessoa {
 ```
 
 <pre style='text-align: justify'>
-R: 
+R: Em tempo de compilação, nenhum erro será apresentado por que isso é uma característica do operador late. Contudo, em tempo de execução, retornará um erro relacionado ao acesso a um dado que não possui valor algum.
 </pre>
 
 #### 7. Modifique a classe Funcionario abaixo para utilizar late corretamente e evitar problemas de inicialização:
@@ -108,6 +108,17 @@ class Funcionario {
 }
 ```
 
+<pre style='text-align: justify'>
+R:
+
+class Funcionario {
+  late String nome;
+  late double salario;
+
+  Funcionario();
+}
+</pre>
+
 #### 8. Escreva um construtor para a classe Aluno, garantindo que nome e nota sejam inicializados na criação do objeto.
 ```dart
 class Aluno {
@@ -116,7 +127,22 @@ class Aluno {
 }
 ```
 
+<pre style='text-align: justify'>
+R:
+
+class Aluno {
+  String nome;
+  double nota;
+
+  Aluno({required this.nome, required this.nota});
+}
+</pre>
+
 #### 9. Qual a vantagem de utilizar um construtor em vez de definir atributos com ? ou late?
+
+<pre style='text-align: justify'>
+R: A principal vantagem dos construtores é garantir a inicialização **obrigatória** e a **segurança dos dados** logo na criação do objeto, evitando valores não inicializados ou null. Com um construtor, você garante que o objeto tenha valores válidos desde o início. Já o uso de **late** e **?** oferece mais flexibilidade, permitindo inicializações posteriores ou valores null, mas exige mais cuidado para garantir que os atributos sejam corretamente configurados antes do uso.
+</pre>
 
 #### 10. Modifique o código abaixo para utilizar parâmetros nomeados no construtor:
 ```dart
@@ -127,8 +153,23 @@ class Endereco {
   Endereco(this.rua, this.cidade);
 }
 ```
+<pre style='text-align: justify'>
+R:
+
+class Endereco {
+  String rua;
+  String cidade;
+  
+  Endereco({required this.rua, required this.cidade});
+}
+</pre>
+
 
 #### 11. O que são métodos get e set em Dart? Para que servem?
+
+<pre style='text-align: justify'>
+R: Métodos get e set em Dart são utilizados para acessar e modificar os atributos de uma classe de maneira controlada, permitindo a manipulação dos dados de forma mais segura e encapsulada. No geral, se tornam interessantes de usar para realizar o tratamento dos dados informados antes que sejam de fato atribuídos aos atributos (no caso do set) ou apresentados ao usuário final de alguma forma (no caso do get).
+</pre>
 
 #### 12. Implemente um getter para a classe Retangulo que calcule a área automaticamente:
 ```dart
@@ -141,6 +182,19 @@ class Retangulo {
 
 ```
 
+<pre style='text-align: justify'>
+R:
+
+class Retangulo {
+  double largura;
+  double altura;
+
+  double get area => (largura * altura);
+  
+  Retangulo(this.largura, this.altura);
+}
+</pre>
+
 #### 13. Modifique a classe abaixo para que o set de idade não permita valores negativos:
 ```dart
 class Pessoa {
@@ -150,28 +204,209 @@ class Pessoa {
 }
 ```
 
-#### 14. Modifique a classe abaixo para que o set de idade não permita valores negativos:
+<pre style='text-align: justify'>
+R:
+
+class Pessoa {
+  int idade;
+
+  set idade(int idade) {
+    try {
+      if (idade < 0) throw new Exception('A idade não pode ser negativa!');
+
+      this.idade = idade;
+    } catch (e) {
+      print('Erro: ${e}');
+    }
+  }
+
+  Pessoa(this.idade);
+}
+</pre>
+
+#### 14. Modifique a classe abaixo com a implementação da idade, no qual, o set não permita valores negativos:
 ```dart
 class Pessoa {
-  double _peso;
+  double __peso_;
   
-  double get peso => _peso;
+  double get peso => __peso_;
   set peso(double novoPeso) {
-    if (novoPeso > 0) _peso = novoPeso;
+    if (novoPeso > 0) __peso_ = novoPeso;
   }
   
-  Pessoa(this._peso);
+  Pessoa(this.__peso_);
 }
 ```
 
+<pre style='text-align: justify'>
+R:
+
+class Pessoa {
+  double _idade;
+  
+  double get idade => _idade;
+
+  set idade(double novaIdade) {
+    if (novaIdade > 0) _idade = novaIdade;
+  }
+  
+  Pessoa(this._idade);
+}
+</pre>
+
 #### 15. Crie uma classe ContaBancaria que possua os atributos titular, saldo e um método depositar(double valor). O saldo deve ser alterado apenas pelo método.
+
+<pre style='text-align: justify'>
+R:
+
+class ContaBancaria {
+  String titular;
+  double saldo;
+
+  ContaBancaria(this.titular, this.saldo);
+
+  void depositar(double valor) {
+    if (valor > 0) {
+      saldo += valor;
+      print('Depósito de \$${valor} realizado com sucesso.');
+    } else {
+      print('Valor de depósito inválido.');
+    }
+  }
+}
+
+</pre>
 
 #### 16. Modifique a classe ContaBancaria da questão anterior, adicionando um método sacar(double valor), garantindo que o saldo não fique negativo.
 
+<pre style='text-align: justify'>
+R:
+
+class ContaBancaria {
+  String titular;
+  double saldo;
+
+  ContaBancaria(this.titular, this.saldo);
+
+  void depositar(double valor) {
+    if (valor > 0) {
+      saldo += valor;
+      print('Depósito de \$${valor} realizado com sucesso.');
+    } else {
+      print('Valor de depósito inválido.');
+    }
+  }
+
+  void sacar(double valor) {
+    if (valor <= saldo && valor > 0) {
+      saldo -= valor;
+      print('Saque de \$${valor} realizado com sucesso.');
+    } else {
+      print('Saldo insuficiente ou valor inválido.');
+    }
+  }
+}
+
+</pre>
+
 #### 17. Reescreva a classe Carro para utilizar construtores nomeados que permitam criar um carro novo (zeroKm) ou usado (usado com ano definido).
+
+<pre style='text-align: justify'>
+R:
+
+class Carro {
+  String modelo;
+  int ano;
+  bool zeroKm;
+
+  Carro.zeroKm(String modelo)
+      : modelo = modelo,
+        ano = DateTime.now().year,
+        zeroKm = true;
+
+  Carro.usado(String modelo, this.ano)
+      : modelo = modelo,
+        zeroKm = false;
+}
+
+</pre>
 
 #### 18. Implemente uma classe Aluno que possua um método que retorne se o aluno está aprovado ou reprovado, considerando a média mínima de 7.
 
+<pre style='text-align: justify'>
+R: 
+
+class Aluno {
+  String nome;
+  double media;
+
+  Aluno(this.nome, this.media);
+
+  String situacao() {
+    return media >= 7 ? 'Aprovado' : 'Reprovado';
+  }
+}
+
+</pre>
+
 #### 19. Crie uma classe Produto que tenha um atributo preco e aplique um desconto fixo de #### 10% ao chamar um método aplicarDesconto().
 
+<pre style='text-align: justify'>
+R:
+
+class Produto {
+  double preco;
+
+  Produto(this.preco);
+
+  void aplicarDesconto() {
+    preco -= preco * 0.10;
+    print('Preço com desconto: \$${preco.toStringAsFixed(2)}');
+  }
+}
+</pre>
+
 #### 20. Crie um programa que utilize tudo o que foi aprendido, simulando um sistema de cadastro de pessoas, onde o usuário pode inserir nome, idade e peso, com validação dos dados antes de exibi-los na tela.
+
+<pre style='text-align: justify'>
+R:
+
+import 'dart:io';
+
+class Pessoa {
+  String nome;
+  int idade;
+  double peso;
+
+  Pessoa(this.nome, this.idade, this.peso);
+}
+
+void main() {
+  print('Digite o nome: ');
+  String nome = stdin.readLineSync()!;
+  
+  print('Digite a idade: ');
+  int idade = int.parse(stdin.readLineSync()!);
+  
+  while (idade <= 0 || idade > 120) {
+    print('Idade inválida. Digite novamente (entre 1 e 100): ');
+    idade = int.parse(stdin.readLineSync()!);
+  }
+
+  print('Digite o peso: ');
+  double peso = double.parse(stdin.readLineSync()!);
+
+  while (peso <= 0) {
+    print('Peso inválido. Digite novamente (maior que 0): ');
+    peso = double.parse(stdin.readLineSync()!);
+  }
+
+  var pessoa = Pessoa(nome, idade, peso);
+  
+  print('Cadastro concluído!');
+  print('Nome: ${pessoa.nome}');
+  print('Idade: ${pessoa.idade}');
+  print('Peso: ${pessoa.peso}');
+}
+
+</pre>
